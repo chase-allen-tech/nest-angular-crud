@@ -1,11 +1,11 @@
 import { Controller, Get, Req, Post, Header, Redirect,
     Query, Param, Body, Put, Delete, Res, HttpStatus } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { CreateCatDto } from 'src/dto/create-cat.dto';
-import { ListAllEntities } from 'src/dto/list-all-entities.dto';
-import { UpdateCatDto } from 'src/dto/update-cat.dto';
-import { CatsService } from 'src/services/cats.service';
-import { Cat } from '../interfaces/cat.interface';
+import { CreateCatDto } from 'src/cats/dto/create-cat.dto';
+import { ListAllEntities } from 'src/cats/dto/list-all-entities.dto';
+import { UpdateCatDto } from 'src/cats/dto/update-cat.dto';
+import { CatsService } from 'src/cats/cats.service';
+import { Cat } from './interfaces/cat.interface';
 
 @Controller('cats')
 export class CatsController {
