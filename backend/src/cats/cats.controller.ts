@@ -1,5 +1,7 @@
-import { Controller, Get, Req, Post, Header, Redirect,
-    Query, Param, Body, Put, Delete, Res, HttpStatus, HttpException } from '@nestjs/common';
+import {
+    Controller, Get, Req, Post, Header, Redirect,
+    Query, Param, Body, Put, Delete, Res, HttpStatus, HttpException, ParseIntPipe, SetMetadata
+} from '@nestjs/common';
 import { Request, Response } from 'express';
 import { CreateCatDto } from 'src/cats/dto/create-cat.dto';
 import { ListAllEntities } from 'src/cats/dto/list-all-entities.dto';
@@ -9,9 +11,10 @@ import { Cat } from './interfaces/cat.interface';
 
 @Controller('cats')
 export class CatsController {
-    constructor(private catsService: CatsService) {}
+    constructor(private catsService: CatsService) { }
 
     @Post()
+    @SetMetadata('roles', ['admin'])
     // @Header('Cache-Control', 'none')
     create(@Body() createCatDto: CreateCatDto, @Res() res: Response) {
         res.status(HttpStatus.CREATED).send();
@@ -20,7 +23,7 @@ export class CatsController {
 
     @Get()
     async findAll(@Query() query: ListAllEntities, @Res() res: Response): Promise<Cat[]> {
-        
+
         throw new HttpException({
             status: HttpStatus.FORBIDDEN,
             error: 'This is a custom message'
@@ -31,8 +34,13 @@ export class CatsController {
         // return this.catsService.findAll();
     }
 
+    // @Get(':uuid')
+    // async findOne(@Param('uuid', new ParseUUIDPipe()) uuid: string) {
+    //     return this.catsService.findOne(uuid);
+    // }
+
     @Get(':id')
-    findOne(@Param('id') id: string) {
+    findOne(@Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })) id: number) {
         return `This action returns a $${id} cat`;
     }
 

@@ -6,9 +6,17 @@ import { CatsController } from './cats/cats.controller';
 
 import { CatsModule } from './cats/cats.module';
 import { logger } from './common/middleware/logger.middleware';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './guard/rolse.guard';
 
 @Module({
-  imports: [CatsModule]
+  imports: [CatsModule],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard
+    }
+  ]
   // imports: [],
   // controllers: [CatsController],
   // providers: [AppService, CatsService],
