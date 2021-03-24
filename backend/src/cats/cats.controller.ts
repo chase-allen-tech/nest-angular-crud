@@ -1,5 +1,5 @@
 import { Controller, Get, Req, Post, Header, Redirect,
-    Query, Param, Body, Put, Delete, Res, HttpStatus } from '@nestjs/common';
+    Query, Param, Body, Put, Delete, Res, HttpStatus, HttpException } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { CreateCatDto } from 'src/cats/dto/create-cat.dto';
 import { ListAllEntities } from 'src/cats/dto/list-all-entities.dto';
@@ -20,10 +20,15 @@ export class CatsController {
 
     @Get()
     async findAll(@Query() query: ListAllEntities, @Res() res: Response): Promise<Cat[]> {
-        res.status(HttpStatus.OK);
+        
+        throw new HttpException({
+            status: HttpStatus.FORBIDDEN,
+            error: 'This is a custom message'
+        }, HttpStatus.FORBIDDEN);
+        // res.status(HttpStatus.OK);
         // return [];
         // res.status(HttpStatus.OK).json([]);
-        return this.catsService.findAll();
+        // return this.catsService.findAll();
     }
 
     @Get(':id')
